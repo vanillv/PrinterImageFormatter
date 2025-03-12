@@ -23,7 +23,6 @@ public class SlotLayout {
             throw new RuntimeException("Ошибка загрузки layout.json", e);
         }
     }
-
     private void generateSlots(SlotFormat format, FormatConfig fc, double gapMM) {
         int startX = MMtoPixel.convert(fc.getStarting_positionX());
         int startY = MMtoPixel.convert(fc.getStarting_positionY());
@@ -38,6 +37,4 @@ public class SlotLayout {
             }
         }
     }
-
-    public List<Slot> getSlots() { return slots; }
 }

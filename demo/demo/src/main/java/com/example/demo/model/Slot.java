@@ -9,6 +9,7 @@ public class Slot {
     private final int width;     // Ширина (в пикселях)
     private final int height;    // Высота (в пикселях)
     private final SlotFormat format;
+    private boolean occupied;
     public Slot(int x, int y, SlotFormat format) {
         this.x = x;
         this.y = y;
