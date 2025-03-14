@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.example.demo.GUI.MainController"
+           prefWidth="1000" prefHeight="600">
+    <ImageView>
+        <Image url="background-photo1.jpg"/>
+    </ImageView>
+    <BorderPane>
+    <left>
+        <ScrollPane>
+            <AnchorPane fx:id="slotsPane" prefWidth="400"/>
+        </ScrollPane>
+    </left>
+    <center>
+        <SplitPane orientation="VERTICAL" dividerPositions="0.7">
+            <StackPane fx:id="dropZone" style="-fx-border-color: #ccc; -fx-border-radius: 5;">
+                <Label text="Перетащите файлы сюда" style="-fx-text-fill: #666;"/>
+            </StackPane>
+            <ListView fx:id="filesListView"/>
+        </SplitPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" padding="10">
+            <Button text="Save" fx:id="saveButton" onAction="#handleSave"/>
+        </HBox>
+    </bottom>
+   </BorderPane>
+</StackPane>
+

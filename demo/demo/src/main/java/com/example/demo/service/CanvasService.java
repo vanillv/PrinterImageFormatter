@@ -4,10 +4,13 @@ import com.example.demo.model.Slot;
 import com.example.demo.model.SlotFormat;
 import com.example.demo.model.SlotLayout;
 import com.example.demo.util.MMtoPixel;
+import lombok.Data;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -16,7 +19,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
-
+@Data
 public class CanvasService {
     private final SlotLayout slotLayout;
     private BufferedImage canvas;
@@ -39,6 +42,25 @@ public class CanvasService {
                 slot.setOccupied(true);
                 break;
             }
+        }
+    }
+    public void testImagePlacement(SlotFormat format) {
+        List<Slot> readySlots = slotLayout.getSlots();
+        Graphics2D g2d = canvas.createGraphics();
+        try (InputStream is = getClass().getResourceAsStream("/background-photo1.jpg")) {
+            if (is == null) {
+                throw new RuntimeException("Файл не найден в ресурсах!");
+            }
+            BufferedImage testImg = ImageIO.read(is);
+            for (Slot slot : readySlots) {
+                g2d.drawImage(testImg, slot.getX(), slot.getY(), null);
+                slot.setOccupied(true);
+                break;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка загрузки изображения", e);
+        } finally {
+            g2d.dispose();
         }
     }
     public void saveCanvas(File outputFile) throws Exception {
