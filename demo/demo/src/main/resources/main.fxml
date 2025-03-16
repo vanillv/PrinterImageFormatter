@@ -12,19 +12,20 @@
         <Image url="background-photo1.jpg"/>
     </ImageView>
     <BorderPane>
-    <left>
-        <ScrollPane>
-            <AnchorPane fx:id="slotsPane" prefWidth="400"/>
-        </ScrollPane>
-    </left>
     <center>
         <SplitPane orientation="VERTICAL" dividerPositions="0.7">
-            <StackPane fx:id="dropZone" style="-fx-border-color: #ccc; -fx-border-radius: 5;">
-                <Label text="Перетащите файлы сюда" style="-fx-text-fill: #666;"/>
-            </StackPane>
-            <ListView fx:id="filesListView"/>
+            <AnchorPane fx:id="slotsContainer"
+                        style="-fx-background-color: rgba(255,255,255,0.8);">
+            </AnchorPane>
         </SplitPane>
     </center>
+    <right>
+        <SplitPane orientation="VERTICAL" dividerPositions="0.7">
+            <StackPane fx:id="dropZoneDelete" style="-fx-border-color: #ccc; -fx-border-radius: 3;">
+                <Label text="удаление файлов" style="-fx-text-fill: #666;"/>
+            </StackPane>
+        </SplitPane>
+    </right>
     <bottom>
         <HBox alignment="CENTER_LEFT" padding="10">
             <Button text="Save" fx:id="saveButton" onAction="#handleSave"/>
