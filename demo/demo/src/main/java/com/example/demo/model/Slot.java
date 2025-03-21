@@ -1,7 +1,14 @@
 package com.example.demo.model;
 
 import com.example.demo.util.MMtoPixel;
+import javafx.scene.image.Image;
 import lombok.Data;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class Slot {
     private final int x;         // Координата X (в пикселях)

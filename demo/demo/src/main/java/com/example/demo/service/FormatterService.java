@@ -31,7 +31,6 @@ public class FormatterService {
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.drawImage(image, 0, 0, targetWidth, targetHeight, null);
         g2d.dispose();
-
         return scaledImage;
     }
     private BufferedImage renderPdf(File pdfFile) throws Exception {
