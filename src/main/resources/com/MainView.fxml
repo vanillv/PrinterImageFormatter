@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import com.example.demo.gui.CanvasPane?>
+
+<BorderPane fx:id="rootPane"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="main.java.com.photoredactor.demo.gui.MainController"
+            prefWidth="1200"
+            prefHeight="800"
+            style="-fx-background-color: #f0f0f0;">
+    <top>
+        <ToolBar style="-fx-padding: 5;">
+            <Button text="Отзеркалить"
+                    onAction="#handleMirror"
+                    style="-fx-font-weight: bold; -fx-padding: 5 10;"/>
+
+            <Button text="Сохранить холст"
+                    onAction="#handleSave"
+                    style="-fx-font-weight: bold; -fx-padding: 5 10;"/>
+        </ToolBar>
+    </top>
+    <center>
+        <CanvasPane fx:id="canvasPane"
+                    BorderPane.alignment="CENTER"
+                    style="-fx-border-color: #ccc; -fx-border-width: 1;"/>
+    </center>
+</BorderPane>

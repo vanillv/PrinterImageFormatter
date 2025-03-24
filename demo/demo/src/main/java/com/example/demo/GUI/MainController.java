@@ -1,6 +1,4 @@
 package com.example.demo.GUI;
-import com.example.demo.model.Slot;
-import com.example.demo.model.SlotFormat;
 import com.example.demo.model.SlotLayout;
 import com.example.demo.service.CanvasService;
 import com.example.demo.service.FormatterService;
@@ -8,24 +6,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class MainController {
-    private final FormatterService formatterService = new FormatterService();
-    private final CanvasService canvasService = new CanvasService();
+    private final static FormatterService formatterService = new FormatterService();
+    private final static CanvasService canvasService = new CanvasService();
     File output = new File("output.png");
     @FXML
     private AnchorPane slotsContainer;
     @FXML private Button saveButton;
+    @FXML private Button testButton;
     private SlotLayout slotLayout;
-
+    private boolean isFlipped = false;
     @FXML
     public void initialize() {
         try {
             slotLayout = new SlotLayout();
             slotLayout.getSlots().forEach(slot -> {
-                SlotView slotView = new SlotView(slot);
+                SlotView slotView = new SlotView(slot, canvasService, formatterService);
                 configureSlotView(slotView);
                 slotsContainer.getChildren().add(slotView);
             });
@@ -42,7 +40,7 @@ public class MainController {
                 slotView.getSlot().getHeight()
         );
     }
-    public void handleSave(File file) {
+    public void handleSave() {
       try {
           canvasService.saveCanvas(output);
       } catch (Exception e) {}
@@ -54,5 +52,7 @@ public class MainController {
     public void handleDelete() {
 
     }
-    public void testImageSaving(){}
+    public void testImageSaving(){
+        try {testImageSaving();} catch (Exception e){};
+    }
 }

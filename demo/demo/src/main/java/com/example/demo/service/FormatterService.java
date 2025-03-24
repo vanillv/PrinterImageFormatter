@@ -33,6 +33,7 @@ public class FormatterService {
         g2d.dispose();
         return scaledImage;
     }
+
     private BufferedImage renderPdf(File pdfFile) throws Exception {
         try (PDDocument document = PDDocument.load(pdfFile)) {
             PDFRenderer renderer = new PDFRenderer(document);

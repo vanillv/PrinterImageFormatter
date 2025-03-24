@@ -1,0 +1,21 @@
+{
+  "round": {
+    "starting_positionX": 25,
+    "starting_positionY": 5,
+    "x": 4,
+    "y": 3
+  },
+  "square": {
+    "starting_positionX": 25,
+    "starting_positionY": 230,
+    "x": 4,
+    "y": 3
+  },
+  "microphone": {
+    "starting_positionX": 25,
+    "starting_positionY": 150,
+    "x": 5,
+    "y": 2
+  },
+  "gapMM": 5
+}

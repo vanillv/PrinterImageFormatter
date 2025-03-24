@@ -19,16 +19,10 @@
             </AnchorPane>
         </SplitPane>
     </center>
-    <right>
-        <SplitPane orientation="VERTICAL" dividerPositions="0.7">
-            <StackPane fx:id="dropZoneDelete" style="-fx-border-color: #ccc; -fx-border-radius: 3;">
-                <Label text="удаление файлов" style="-fx-text-fill: #666;"/>
-            </StackPane>
-        </SplitPane>
-    </right>
     <bottom>
         <HBox alignment="CENTER_LEFT" padding="10">
             <Button text="Save" fx:id="saveButton" onAction="#handleSave"/>
+            <Button text="Test" fx:id="testButton" onAction="#testImageSaving"
         </HBox>
     </bottom>
    </BorderPane>

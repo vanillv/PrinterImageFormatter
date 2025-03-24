@@ -1,0 +1,12 @@
+com\example\demo\application\Main.class
+com\example\demo\model\FormatConfig.class
+com\example\demo\model\SlotLayout.class
+com\example\demo\gui\SlotView.class
+com\example\demo\util\MMtoPixel.class
+com\example\demo\gui\CanvasPane.class
+com\example\demo\model\SlotFormat.class
+com\example\demo\gui\MainController.class
+com\example\demo\service\FormatterService.class
+com\example\demo\model\Slot.class
+com\example\demo\service\CanvasService.class
+com\example\demo\model\LayoutConfig.class
