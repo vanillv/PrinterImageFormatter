@@ -33,16 +33,6 @@ public class CanvasService {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
     public void placeImage(BufferedImage image, Slot slot) {
-//        List<Slot> slots = slotLayout.getSlots();
-//        for (Slot slot : slots) {
-//            if (slot.getFormat() == format && !slot.isOccupied()) {
-//                Graphics2D g2d = canvas.createGraphics();
-//                g2d.drawImage(image, slot.getX(), slot.getY(), null);
-//                g2d.dispose();
-//                slot.setOccupied(true);
-//                break;
-//            }
-//        }
         if (!slot.isOccupied()) {
             Graphics2D g2d = canvas.createGraphics();
              g2d.drawImage(image, slot.getX(), slot.getY(), null);

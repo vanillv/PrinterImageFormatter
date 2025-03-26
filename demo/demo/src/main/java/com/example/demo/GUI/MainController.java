@@ -10,12 +10,13 @@ import java.io.File;
 
 public class MainController {
     private final static FormatterService formatterService = new FormatterService();
-    private final static CanvasService canvasService = new CanvasService();
+    protected final static CanvasService canvasService = new CanvasService();
     File output = new File("output.png");
     @FXML
     private AnchorPane slotsContainer;
     @FXML private Button saveButton;
     @FXML private Button testButton;
+    @FXML private Button deleteButton;
     private SlotLayout slotLayout;
     private boolean isFlipped = false;
     @FXML
@@ -45,12 +46,8 @@ public class MainController {
           canvasService.saveCanvas(output);
       } catch (Exception e) {}
     }
-
-    public void mirrorPicture() {
-
-    }
     public void handleDelete() {
-
+        slotsContainer.getChildren().clear();
     }
     public void testImageSaving(){
         try {testImageSaving();} catch (Exception e){};

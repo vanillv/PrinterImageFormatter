@@ -7,15 +7,23 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
 import lombok.Data;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import static com.example.demo.GUI.MainController.canvasService;
+
 public class SlotView extends StackPane {
     private File originalFile;
     private boolean isFlipped = false;
@@ -34,6 +42,12 @@ public class SlotView extends StackPane {
         this.setOnDragOver(this::handleDragOver);
         this.setOnDragDropped(this::handleDragDropped);
         this.setOnDragExited(this::handleDragExited);
+        this.setFocusTraversable(true); // Разрешаем фокус
+        this.setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.E) {
+                flipImage();
+            }
+        });
     }
     private void handleDragOver(DragEvent event) {
         if (event.getDragboard().hasFiles()) {
@@ -47,6 +61,7 @@ public class SlotView extends StackPane {
         if (db.hasFiles()) {
             try {
                 File file = db.getFiles().get(0);
+                originalFile = db.getFiles().get(0);
                 Image image = new Image(file.toURI().toString());
                 setImage(image);
                 BufferedImage bufferedImage = formatter.resizeForSlot(formatter.convertToPng(file), slot.getFormat());
@@ -72,6 +87,47 @@ public class SlotView extends StackPane {
             this.getChildren().add(imageView);
         } else {
             imageView.setImage(image);
+        }
+    }
+    private void flipImage() {
+        if (originalFile == null) return;
+        try {
+            // Загружаем изображение
+            BufferedImage image = ImageIO.read(originalFile);
+
+            // Горизонтальное отражение
+            BufferedImage flipped = new BufferedImage(
+                    image.getWidth(),
+                    image.getHeight(),
+                    image.getType()
+            );
+            AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+            tx.translate(-image.getWidth(), 0);
+            Graphics2D g = flipped.createGraphics();
+            g.drawImage(image, tx, null);
+            g.dispose();
+            File flippedFile = new File(
+                    originalFile.getParent(),
+                    "flipped_" + originalFile.getName()
+            );
+            ImageIO.write(flipped, "png", flippedFile);
+            originalFile = flippedFile;
+            updateImage();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void updateImage() {
+        if (originalFile != null) {
+            Image image = new Image(originalFile.toURI().toString());
+            setImage(image);
+            BufferedImage awtImage = null;
+            try {
+                awtImage = ImageIO.read(originalFile);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            canvasService.placeImage(awtImage, slot);
         }
     }
     public void clear() {
