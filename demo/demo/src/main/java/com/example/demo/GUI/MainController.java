@@ -50,6 +50,6 @@ public class MainController {
         slotsContainer.getChildren().clear();
     }
     public void testImageSaving(){
-        try {testImageSaving();} catch (Exception e){};
+        try {canvasService.testImagePlacement();} catch (Exception e){};
     }
 }

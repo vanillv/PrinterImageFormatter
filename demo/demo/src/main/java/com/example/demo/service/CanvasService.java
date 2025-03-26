@@ -40,7 +40,7 @@ public class CanvasService {
              slot.setOccupied(true);
         }
     }
-    public void testImagePlacement(SlotFormat format) {
+    public void testImagePlacement() {
         List<Slot> readySlots = slotLayout.getSlots();
         Graphics2D g2d = canvas.createGraphics();
         try (InputStream is = getClass().getResourceAsStream("/background-photo1.jpg")) {
