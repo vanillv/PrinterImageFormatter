@@ -11,6 +11,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -35,29 +37,32 @@ public class CanvasService {
     public void placeImage(BufferedImage image, Slot slot) {
         if (!slot.isOccupied()) {
             Graphics2D g2d = canvas.createGraphics();
-             g2d.drawImage(image, slot.getX(), slot.getY(), null);
-             g2d.dispose();
-             slot.setOccupied(true);
-        }
-    }
-    public void testImagePlacement() {
-        List<Slot> readySlots = slotLayout.getSlots();
-        Graphics2D g2d = canvas.createGraphics();
-        try (InputStream is = getClass().getResourceAsStream("/background-photo1.jpg")) {
-            if (is == null) {
-                throw new RuntimeException("Файл не найден в ресурсах!");
-            }
-            BufferedImage testImg = ImageIO.read(is);
-            for (Slot slot : readySlots) {
-                g2d.drawImage(testImg, slot.getX(), slot.getY(), null);
-                slot.setOccupied(true);
-                break;
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка загрузки изображения", e);
-        } finally {
+            System.out.printf("Placing image at [%dpx, %dpx] for %s slot%n",
+                    slot.getX(), slot.getY(), slot.getFormat());
+            BufferedImage targetArea = canvas.getSubimage(
+                    slot.getX(),
+                    slot.getY(),
+                    slot.getWidth(),
+                    slot.getHeight()
+            );
+            Graphics2D areaGraphics = targetArea.createGraphics();
+            areaGraphics.drawImage(image, 0, 0, null);
+            areaGraphics.dispose();
+            slot.setOccupied(true);
             g2d.dispose();
         }
+    }
+    public void testCanvas(File outputFile, FormatterService formatter) {
+            try {
+                for (Slot slot : slotLayout.getSlots()) {
+                    BufferedImage testImage = formatter.convertToPng(new File("src/main/resources/woods-test-image.jpg"));
+                    BufferedImage image = new FormatterService().resizeForSlot(testImage, slot.getFormat());
+                    placeImage(image, slot);
+                }
+                saveCanvas(outputFile);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
     }
     public void saveCanvas(File outputFile) throws Exception {
         ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();

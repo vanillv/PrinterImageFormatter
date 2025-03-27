@@ -16,6 +16,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageFilter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,20 +83,18 @@ public class SlotView extends StackPane {
         if (imageView == null) {
             imageView = new ImageView(image);
             imageView.setPreserveRatio(false);
-            imageView.fitWidthProperty().bind(this.widthProperty());
-            imageView.fitHeightProperty().bind(this.heightProperty());
+            imageView.fitWidthProperty().bind(this.widthProperty().multiply(0.95));
+            imageView.fitHeightProperty().bind(this.heightProperty().multiply(0.95));
             this.getChildren().add(imageView);
         } else {
             imageView.setImage(image);
         }
+        this.setMaxSize(this.getPrefWidth(), this.getPrefHeight());
     }
     private void flipImage() {
         if (originalFile == null) return;
         try {
-            // Загружаем изображение
             BufferedImage image = ImageIO.read(originalFile);
-
-            // Горизонтальное отражение
             BufferedImage flipped = new BufferedImage(
                     image.getWidth(),
                     image.getHeight(),

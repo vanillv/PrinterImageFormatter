@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.image.Image?>
-<?import javafx.geometry.Insets?>
-<StackPane xmlns="http://javafx.com/javafx"
-           xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.example.demo.GUI.MainController"
-           prefWidth="1000" prefHeight="600">
-    <ImageView>
-        <Image url="@/background-photo1.jpg" smooth="true"/>
-    </ImageView>
-    <BorderPane>
-        <center>
-            <SplitPane orientation="VERTICAL" dividerPositions="0.7">
-                <AnchorPane fx:id="slotsContainer"
-                            style="-fx-background-color: rgba(255,255,255,0.8);">
-                </AnchorPane>
-            </SplitPane>
-        </center>
-        <bottom>
-            <HBox alignment="CENTER_LEFT">
-                <padding>
-                    <Insets top="10" right="20" bottom="10" left="20"/>
-                </padding>
-                <Button text="Save" fx:id="saveButton" onAction="#handleSave"/>
-                <Button text="Test" fx:id="testButton" onAction="#testImageSaving"/>
-                <Button text="Clear" fx:id="deleteButton" onAction="#handleDelete"/>
-            </HBox>
-        </bottom>
-    </BorderPane>
-</StackPane>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.demo.GUI.MainController"
+            prefWidth="1000" prefHeight="600"
+            style="-fx-background-color: white;">
+    <center>
+        <ScrollPane fitToWidth="true" fitToHeight="true">
+            <AnchorPane fx:id="slotsContainer"
+                        style="-fx-background-color: rgba(255,255,255,0.8);"
+                        prefWidth="330"
+                        prefHeight="600"/>
+        </ScrollPane>
+    </center>
+    <bottom>
+        <HBox alignment="CENTER_LEFT" spacing="15"
+              style="-fx-background-color: rgba(255,255,255,0.9); -fx-padding: 10;">
+            <Button text="Save" fx:id="saveButton" onAction="#handleSave" prefWidth="100"/>
+            <Button text="Test" fx:id="testButton" onAction="#handleTest" prefWidth="100"/>
+            <Button text="Clear" fx:id="deleteButton" onAction="#handleDelete" prefWidth="100"/>
+        </HBox>
+    </bottom>
+</BorderPane>
 

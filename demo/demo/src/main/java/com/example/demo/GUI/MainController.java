@@ -7,11 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class MainController {
     private final static FormatterService formatterService = new FormatterService();
     protected final static CanvasService canvasService = new CanvasService();
-    File output = new File("output.png");
     @FXML
     private AnchorPane slotsContainer;
     @FXML private Button saveButton;
@@ -32,24 +33,42 @@ public class MainController {
             throw new RuntimeException("Ошибка загрузки слота", e);
         }
     }
-
     private void configureSlotView(SlotView slotView) {
-        slotView.setLayoutX(slotView.getSlot().getX());
-        slotView.setLayoutY(slotView.getSlot().getY());
+        slotView.setLayoutX(slotView.getSlot().getX() * 0.2);
+        slotView.setLayoutY(slotView.getSlot().getY() * 0.2);
         slotView.setPrefSize(
-                slotView.getSlot().getWidth(),
-                slotView.getSlot().getHeight()
+                slotView.getSlot().getWidth() * 0.2,
+                slotView.getSlot().getHeight() * 0.2
         );
     }
     public void handleSave() {
       try {
+          int number = 0;
+          String userName = System.getProperty("user.name");
+          String fileName = "output" + number + ".png";
+          Path path = Path.of("C:\\Users\\"+userName+"\\Downloads" + fileName);
+          if (Files.exists(path)) {
+              number++;
+          };
+          File output = Files.createFile(path).toFile();
           canvasService.saveCanvas(output);
       } catch (Exception e) {}
     }
+    public void handleTest() {
+        try {
+            int number = 0;
+            String userName = System.getProperty("user.name");
+            String fileName = "test-result" + number + ".png";
+            Path path = Path.of("C:\\Users\\"+userName+"\\Downloads" + fileName);
+            if (Files.exists(path)) {
+                number++;
+            };
+            File output = Files.createFile(path).toFile();
+            canvasService.testCanvas(output, formatterService);
+        } catch (Exception e) {}
+    }
     public void handleDelete() {
         slotsContainer.getChildren().clear();
-    }
-    public void testImageSaving(){
-        try {canvasService.testImagePlacement();} catch (Exception e){};
+        initialize();
     }
 }
