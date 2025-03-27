@@ -64,6 +64,9 @@ public class CanvasService {
                 throw new RuntimeException(e);
             }
     }
+    public void clearCanvas() {
+        initializeCanvas();
+    }
     public void saveCanvas(File outputFile) throws Exception {
         ImageWriter writer = ImageIO.getImageWritersByFormatName("png").next();
         writer.setOutput(ImageIO.createImageOutputStream(outputFile));
@@ -72,7 +75,6 @@ public class CanvasService {
                 writer.getDefaultWriteParam()
         );
         setDpiMetadata(metadata, 300);
-
         writer.write(null, new IIOImage(canvas, null, metadata), null);
     }
     private void setDpiMetadata(IIOMetadata metadata, int dpi) {

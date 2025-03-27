@@ -10,18 +10,12 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.StackPane;
-import lombok.Data;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
-import java.awt.image.BufferedImageFilter;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 
 import static com.example.demo.GUI.MainController.canvasService;
 
@@ -43,7 +37,7 @@ public class SlotView extends StackPane {
         this.setOnDragOver(this::handleDragOver);
         this.setOnDragDropped(this::handleDragDropped);
         this.setOnDragExited(this::handleDragExited);
-        this.setFocusTraversable(true); // Разрешаем фокус
+        this.setFocusTraversable(true);
         this.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.E) {
                 flipImage();
@@ -87,7 +81,7 @@ public class SlotView extends StackPane {
             imageView.fitHeightProperty().bind(this.heightProperty().multiply(0.95));
             this.getChildren().add(imageView);
         } else {
-            imageView.setImage(image);
+            setImage(image);
         }
         this.setMaxSize(this.getPrefWidth(), this.getPrefHeight());
     }
@@ -102,9 +96,7 @@ public class SlotView extends StackPane {
             );
             AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
             tx.translate(-image.getWidth(), 0);
-            Graphics2D g = flipped.createGraphics();
-            g.drawImage(image, tx, null);
-            g.dispose();
+            canvasService.placeImage(flipped, slot);
             File flippedFile = new File(
                     originalFile.getParent(),
                     "flipped_" + originalFile.getName()

@@ -9,6 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 
 public class MainController {
     private final static FormatterService formatterService = new FormatterService();
@@ -20,6 +21,8 @@ public class MainController {
     @FXML private Button deleteButton;
     private SlotLayout slotLayout;
     private boolean isFlipped = false;
+    String fileName = "result-file";
+    Path path;
     @FXML
     public void initialize() {
         try {
@@ -29,9 +32,16 @@ public class MainController {
                 configureSlotView(slotView);
                 slotsContainer.getChildren().add(slotView);
             });
+            initialisePath();
         } catch (Exception e) {
             throw new RuntimeException("Ошибка загрузки слота", e);
         }
+    }
+    private void initialisePath() {
+        int number = new Random().nextInt(9999, 100000);
+        String userName = System.getProperty("user.name");
+        String file = fileName + number + ".png";
+        path = Path.of("C:\\Users\\"+userName+"\\Downloads\\" + file);
     }
     private void configureSlotView(SlotView slotView) {
         slotView.setLayoutX(slotView.getSlot().getX() * 0.2);
@@ -43,13 +53,6 @@ public class MainController {
     }
     public void handleSave() {
       try {
-          int number = 0;
-          String userName = System.getProperty("user.name");
-          String fileName = "output" + number + ".png";
-          Path path = Path.of("C:\\Users\\"+userName+"\\Downloads\\" + fileName);
-          if (Files.exists(path)) {
-              number++;
-          };
           System.out.println(path.toString());
           File output = Files.createFile(path).toFile();
           canvasService.saveCanvas(output);
@@ -58,20 +61,19 @@ public class MainController {
     public void handleTest() {
         try {
             handleClear();
-            int number = 0;
-            String userName = System.getProperty("user.name");
-            String fileName = "test-result" + number + ".png";
-            Path path = Path.of("C:\\Users\\"+userName+"\\Downloads\\" + fileName);
-            if (Files.exists(path)) {
-                number++;
-            };
+            fileName = "test-result";
             File output = Files.createFile(path).toFile();
             canvasService.testCanvas(output, formatterService);
+            if (!output.exists()) {
+                System.out.println("output is empty");
+            }
+            fileName = "result-file";
             handleClear();
         } catch (Exception e) {}
     }
     public void handleClear() {
         slotsContainer.getChildren().clear();
         initialize();
+        canvasService.clearCanvas();
     }
 }
