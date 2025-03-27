@@ -46,28 +46,31 @@ public class MainController {
           int number = 0;
           String userName = System.getProperty("user.name");
           String fileName = "output" + number + ".png";
-          Path path = Path.of("C:\\Users\\"+userName+"\\Downloads" + fileName);
+          Path path = Path.of("C:\\Users\\"+userName+"\\Downloads\\" + fileName);
           if (Files.exists(path)) {
               number++;
           };
+          System.out.println(path.toString());
           File output = Files.createFile(path).toFile();
           canvasService.saveCanvas(output);
       } catch (Exception e) {}
     }
     public void handleTest() {
         try {
+            handleClear();
             int number = 0;
             String userName = System.getProperty("user.name");
             String fileName = "test-result" + number + ".png";
-            Path path = Path.of("C:\\Users\\"+userName+"\\Downloads" + fileName);
+            Path path = Path.of("C:\\Users\\"+userName+"\\Downloads\\" + fileName);
             if (Files.exists(path)) {
                 number++;
             };
             File output = Files.createFile(path).toFile();
             canvasService.testCanvas(output, formatterService);
+            handleClear();
         } catch (Exception e) {}
     }
-    public void handleDelete() {
+    public void handleClear() {
         slotsContainer.getChildren().clear();
         initialize();
     }

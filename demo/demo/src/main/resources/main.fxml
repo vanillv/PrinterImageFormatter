@@ -19,7 +19,7 @@
               style="-fx-background-color: rgba(255,255,255,0.9); -fx-padding: 10;">
             <Button text="Save" fx:id="saveButton" onAction="#handleSave" prefWidth="100"/>
             <Button text="Test" fx:id="testButton" onAction="#handleTest" prefWidth="100"/>
-            <Button text="Clear" fx:id="deleteButton" onAction="#handleDelete" prefWidth="100"/>
+            <Button text="Clear" fx:id="deleteButton" onAction="#handleClear" prefWidth="100"/>
         </HBox>
     </bottom>
 </BorderPane>
