@@ -5,10 +5,7 @@ import com.example.demo.service.CanvasService;
 import com.example.demo.service.FormatterService;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.StackPane;
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,9 +13,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import static com.example.demo.GUI.MainController.canvasService;
-
 public class SlotView extends StackPane {
     private File originalFile;
     private boolean isFlipped = false;
@@ -26,6 +21,7 @@ public class SlotView extends StackPane {
     private ImageView imageView;
     private final CanvasService canvas;
     private final FormatterService formatter;
+
     public SlotView(Slot slot, CanvasService canvas, FormatterService formatter) {
         this.slot = slot;
         this.canvas = canvas;
@@ -36,11 +32,20 @@ public class SlotView extends StackPane {
         this.setStyle("-fx-border-color: #666; -fx-border-width: 2px;");
         this.setOnDragOver(this::handleDragOver);
         this.setOnDragDropped(this::handleDragDropped);
-        this.setOnDragExited(this::handleDragExited);
         this.setFocusTraversable(true);
+        this.setOnMouseClicked(event -> this.requestFocus());
+        focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal) {
+                setStyle("-fx-border-color: #0099ff;");
+            } else {
+                setStyle("-fx-border-color: #666;");
+            }
+        });
         this.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.E) {
+                System.out.println("e pressed");
                 flipImage();
+                e.consume();
             }
         });
     }
@@ -69,10 +74,6 @@ public class SlotView extends StackPane {
         this.setStyle("-fx-border-color: #666;");
         event.consume();
     }
-    private void handleDragExited(DragEvent event) {
-        clear();
-        event.isAccepted();
-    }
     private void setImage(Image image) {
         if (imageView == null) {
             imageView = new ImageView(image);
@@ -81,11 +82,12 @@ public class SlotView extends StackPane {
             imageView.fitHeightProperty().bind(this.heightProperty().multiply(0.95));
             this.getChildren().add(imageView);
         } else {
-            setImage(image);
+            imageView.setImage(image);
         }
         this.setMaxSize(this.getPrefWidth(), this.getPrefHeight());
     }
     private void flipImage() {
+        System.out.println("flipping image");
         if (originalFile == null) return;
         try {
             BufferedImage image = ImageIO.read(originalFile);
@@ -96,7 +98,10 @@ public class SlotView extends StackPane {
             );
             AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
             tx.translate(-image.getWidth(), 0);
-            canvasService.placeImage(flipped, slot);
+            Graphics2D g = flipped.createGraphics();
+            g.setTransform(tx);
+            g.drawImage(image, 0, 0, null);
+            g.dispose();
             File flippedFile = new File(
                     originalFile.getParent(),
                     "flipped_" + originalFile.getName()

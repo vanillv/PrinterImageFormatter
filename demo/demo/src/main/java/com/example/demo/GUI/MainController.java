@@ -56,6 +56,7 @@ public class MainController {
           System.out.println(path.toString());
           File output = Files.createFile(path).toFile();
           canvasService.saveCanvas(output);
+          handleClear();
       } catch (Exception e) {}
     }
     public void handleTest() {

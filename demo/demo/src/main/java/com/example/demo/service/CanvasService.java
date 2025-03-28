@@ -35,22 +35,23 @@ public class CanvasService {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     }
     public void placeImage(BufferedImage image, Slot slot) {
-        if (!slot.isOccupied()) {
-            Graphics2D g2d = canvas.createGraphics();
-            System.out.printf("Placing image at [%dpx, %dpx] for %s slot%n",
-                    slot.getX(), slot.getY(), slot.getFormat());
-            BufferedImage targetArea = canvas.getSubimage(
-                    slot.getX(),
-                    slot.getY(),
-                    slot.getWidth(),
-                    slot.getHeight()
-            );
-            Graphics2D areaGraphics = targetArea.createGraphics();
-            areaGraphics.drawImage(image, 0, 0, null);
-            areaGraphics.dispose();
-            slot.setOccupied(true);
-            g2d.dispose();
-        }
+        Graphics2D g2d = canvas.createGraphics();
+
+        // Очищаем область слота перед отрисовкой нового изображения
+        BufferedImage targetArea = canvas.getSubimage(
+                slot.getX(),
+                slot.getY(),
+                slot.getWidth(),
+                slot.getHeight()
+        );
+        Graphics2D areaGraphics = targetArea.createGraphics();
+        areaGraphics.setComposite(AlphaComposite.Clear);
+        areaGraphics.fillRect(0, 0, slot.getWidth(), slot.getHeight());
+        areaGraphics.setComposite(AlphaComposite.SrcOver);
+        areaGraphics.drawImage(image, 0, 0, null);
+        areaGraphics.dispose();
+        g2d.dispose();
+        slot.setOccupied(true);
     }
     public void testCanvas(File outputFile, FormatterService formatter) {
             try {
